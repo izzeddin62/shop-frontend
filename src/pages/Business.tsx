@@ -1,4 +1,4 @@
-import { Link, useNavigate, useOutletContext } from "react-router-dom";
+import { Link, Navigate, useOutletContext } from "react-router-dom";
 import Product from "../components/cards/Product";
 import { User } from "../utils/interfaces";
 import { getBusinesses } from "../utils/api";
@@ -6,10 +6,8 @@ import { useQuery } from "react-query";
 
 export default function Business() {
   const user = useOutletContext<User>();
-  const navigate = useNavigate();
   if (user.type !== "businessOwner") {
-    navigate("/");
-    return null;
+    return <Navigate to="/" />;
   }
 
   const { data } = useQuery(["businesses"], getBusinesses, {

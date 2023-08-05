@@ -18,7 +18,7 @@ export default function Shop() {
   }
   return (
     <div className="mx-auto mt-10 max-w-[944px]">
-      <h1 className="flex items-center justify-center border-b border-b-gray-800 pb-3 font-serif text-3xl font-medium">
+      <h1 className="flex items-center justify-between border-b border-b-gray-800 pb-3 font-serif text-3xl font-medium">
         {business.shopName}&apos;s Products
         <button onClick={handleBack} className="text-base font-normal">
           back

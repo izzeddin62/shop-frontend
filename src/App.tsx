@@ -12,6 +12,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import NewProduct from "./pages/NewProduct";
 import Shop from "./pages/Shop";
+import Signup from "./pages/Signup";
 
 function App() {
   const router = createBrowserRouter(
@@ -29,6 +30,7 @@ function App() {
           <Route path="add-product" element={<NewProduct />} />
         </Route>
         <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
       </>,
     ),
   );

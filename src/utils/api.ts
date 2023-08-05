@@ -54,3 +54,30 @@ export async function createProduct(
   );
   return res.data.product;
 }
+
+export async function signup(
+  type: string,
+  user: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    password: string;
+    shopName?: string;
+  },
+) {
+  if (type === "customer") {
+    delete user.shopName;
+    const res = await axios.post<{
+      token: string;
+      user: User;
+      message: string;
+    }>("http://localhost:3003/auth/signup", { ...user });
+    return res.data;
+  }
+  const res = await axios.post<{
+    token: string;
+    user: User;
+    message: string;
+  }>("http://localhost:3003/auth/owner/signup", { ...user });
+  return res.data;
+}

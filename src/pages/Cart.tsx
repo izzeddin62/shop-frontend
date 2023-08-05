@@ -47,9 +47,9 @@ export default function Cart() {
           {chartItems.map(([id, quantity]) => (
             <Product
               key={id}
-              showCart={false}
               {...cartItemsForShop.find((el) => el.id === id)!}
               quantity={quantity}
+              showCart={false}
             />
           ))}
         </div>
