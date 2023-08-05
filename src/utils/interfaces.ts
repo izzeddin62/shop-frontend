@@ -20,3 +20,13 @@ export interface Product {
   category: string;
   description?: string;
 }
+
+export interface User {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  type: "businessOwner" | "customer";
+  createdAt: Date;
+  updatedAt: Date;
+}

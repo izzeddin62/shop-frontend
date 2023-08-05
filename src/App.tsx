@@ -5,8 +5,12 @@ import {
   createRoutesFromElements,
 } from "react-router-dom";
 import AppWrapper from "./components/layouts/AppWrapper";
+import Business from "./pages/Business";
+import BusinessWrapper from "./components/layouts/BusinessWrapper";
 import Cart from "./pages/Cart";
 import Home from "./pages/Home";
+import Login from "./pages/Login";
+import NewProduct from "./pages/NewProduct";
 import Shop from "./pages/Shop";
 
 function App() {
@@ -20,6 +24,11 @@ function App() {
             <Route path="cart" element={<Cart />} />
           </Route>
         </Route>
+        <Route path="/business" element={<BusinessWrapper />}>
+          <Route index element={<Business />} />
+          <Route path="add-product" element={<NewProduct />} />
+        </Route>
+        <Route path="/login" element={<Login />} />
       </>,
     ),
   );
