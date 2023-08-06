@@ -1,9 +1,9 @@
 import { Business, Product, User } from "./interfaces";
 import axios from "axios";
-
+const url = process.env.REACT_APP_URL;
 export async function getBusinesses() {
   const res = await axios.get<{ businesses: Business[]; message: string }>(
-    "http://localhost:3003/products",
+    `${url}/products`,
   );
   return res.data.businesses;
 }
@@ -14,11 +14,11 @@ export async function login(email: string, password: string, type: string) {
       token: string;
       user: User;
       message: string;
-    }>("http://localhost:3003/auth/signin", { email, password });
+    }>(`${url}/auth/signin`, { email, password });
     return res.data;
   }
   const res = await axios.post<{ token: string; user: User; message: string }>(
-    "http://localhost:3003/auth/owner/signin",
+    `${url}/auth/owner/signin`,
     { email, password },
   );
   return res.data;
@@ -26,7 +26,7 @@ export async function login(email: string, password: string, type: string) {
 
 export async function getUser(token: string) {
   const res = await axios.get<{ user: User; message: string }>(
-    "http://localhost:3003/auth/user",
+    `${url}/auth/user`,
     {
       headers: {
         authorization: `Bearer ${token}`,
@@ -44,7 +44,7 @@ export async function createProduct(
     product: Product;
     message: string;
   }>(
-    "http://localhost:3003/products",
+    `${url}/products`,
     { ...product },
     {
       headers: {
@@ -71,14 +71,14 @@ export async function signup(
       token: string;
       user: User;
       message: string;
-    }>("http://localhost:3003/auth/signup", { ...user });
+    }>(`${url}/auth/signup`, { ...user });
     return res.data;
   }
   const res = await axios.post<{
     token: string;
     user: User;
     message: string;
-  }>("http://localhost:3003/auth/owner/signup", { ...user });
+  }>(`${url}/auth/owner/signup`, { ...user });
   return res.data;
 }
 
@@ -90,7 +90,7 @@ export async function orderProducts(
     message: string;
     products: Product[];
   }>(
-    "http://localhost:3003/products/order",
+    `${url}/products/order`,
     { products },
     {
       headers: {

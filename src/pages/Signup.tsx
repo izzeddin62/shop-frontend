@@ -52,7 +52,7 @@ export default function Signup() {
         >
           <span className="font-medium">Danger alert!</span>{" "}
           {isError
-            ? "Invalid email or password"
+            ? "Server error, try again later"
             : "Change a few things up and try submitting again."}
         </div>
       )}
