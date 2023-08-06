@@ -2,6 +2,14 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Environment variables
+- create a .env file
+- add the following content:
+```
+REACT_APP_URL=https://autumn-wildflower-5567.fly.dev
+```
+The url points to a hosted backend but you can change to use another hosted backend or a locally run backend see [backend readme](https://github.com/izzeddin62/shop-backend/blob/main/README.md)
+
 ## Available Scripts
 
 In the project directory, you can run:
