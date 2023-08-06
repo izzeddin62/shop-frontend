@@ -11,6 +11,7 @@ import Cart from "./pages/Cart";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import NewProduct from "./pages/NewProduct";
+import Order from "./pages/Order";
 import Shop from "./pages/Shop";
 import Signup from "./pages/Signup";
 
@@ -20,6 +21,7 @@ function App() {
       <>
         <Route element={<AppWrapper />}>
           <Route path="/" element={<Home />} />
+          <Route path="/order" element={<Order />} />
           <Route path="/shop/:shopId">
             <Route index element={<Shop />} />
             <Route path="cart" element={<Cart />} />

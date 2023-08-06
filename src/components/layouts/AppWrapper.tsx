@@ -46,7 +46,9 @@ export default function AppWrapper() {
           </Link>
         )}
 
-        <div className="text-xl text-white">logo</div>
+        <Link to="/" className="text-xl text-white">
+          logo
+        </Link>
         <button className="relative" onClick={handleCartClick}>
           <img src={chart} alt="cart" className="h-6 w-6" />
           <span className="absolute -right-4 -top-4 text-white">

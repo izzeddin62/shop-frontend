@@ -1,26 +1,26 @@
-import { useNavigate, useParams } from "react-router-dom";
-import { Button } from "react-aria-components";
+/* eslint-disable max-lines-per-function */
+import { Business, User } from "../utils/interfaces";
+import { getBusinesses, orderProducts } from "../utils/api";
+import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import Product from "../components/cards/Product";
-import { getBusinesses } from "../utils/api";
 import { useCartContext } from "../contexts/CartWrapper";
-import { useQuery } from "react-query";
 
 export default function Cart() {
+  const user = useOutletContext<User>();
   const { shopId } = useParams<{ shopId: string }>();
+  const token = JSON.parse(localStorage.getItem("token")!);
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { data } = useQuery(["businesses"], getBusinesses, {
     useErrorBoundary: true,
   });
   const business = data?.find((business) => business.id === shopId);
-  const [cartItems] = useCartContext();
-  if (!shopId) return <div>Cart is empty</div>;
-  const cartItemsForShop = cartItems[shopId];
-  if (!cartItemsForShop) return <div>Cart is empty</div>;
-  if (!business) {
-    return <div>Business not found</div>;
-  }
+  const [cartItems, setCartItems] = useCartContext();
+
+  const cartItemsForShop = cartItems[shopId!];
   const chartItemsMap = new Map<string, number>();
-  cartItemsForShop.forEach((item) => {
+  cartItemsForShop?.forEach((item) => {
     if (chartItemsMap.has(item.id)) {
       chartItemsMap.set(item.id, (chartItemsMap.get(item.id) ?? 0) + 1);
     } else {
@@ -31,13 +31,54 @@ export default function Cart() {
   for (const i of chartItemsMap) {
     chartItems.push(i);
   }
+  const { mutate } = useMutation({
+    mutationFn: () => orderProducts(token, chartItems),
+    onSuccess: async () => {
+      const previousBusinesses =
+        queryClient.getQueryData<Business[]>("businesses");
+      queryClient.setQueryData<Business[]>(
+        "businesses",
+        (previousBusinesses) =>
+          previousBusinesses?.map((business) => {
+            if (business.id === user.id) {
+              const newProducts = business.Products.map((product) => {
+                if (chartItemsMap.has(product.id)) {
+                  return {
+                    ...product,
+                    quantity: product.quantity - chartItemsMap.get(product.id)!,
+                  };
+                }
+                return product;
+              });
+              return {
+                ...business,
+                products: newProducts,
+              };
+            } else {
+              return business;
+            }
+          }) ?? [],
+      );
+      setCartItems((prev) => {
+        const newCartItems = { ...prev };
+        delete newCartItems[shopId!];
+        return newCartItems;
+      });
+      navigate("/order");
+      return { previousBusinesses };
+    },
+  });
   const handleBack = () => {
     navigate(-1);
+  };
+
+  const handleOrder = () => {
+    mutate();
   };
   return (
     <div className="mx-auto mt-10 max-w-[944px]">
       <h1 className="flex items-center justify-between border-b border-b-gray-800 pb-3 font-serif text-3xl font-medium">
-        {business.shopName}&apos; shop cart
+        {business?.shopName}&apos; shop cart
         <button onClick={handleBack} className="text-base font-normal">
           back
         </button>
@@ -47,19 +88,20 @@ export default function Cart() {
           {chartItems.map(([id, quantity]) => (
             <Product
               key={id}
-              {...cartItemsForShop.find((el) => el.id === id)!}
+              {...cartItemsForShop!.find((el) => el.id === id)!}
               quantity={quantity}
               showCart={false}
             />
           ))}
         </div>
-        <Button
+        <button
+          onClick={handleOrder}
           className={
             "fixed inset-x-0 bottom-10 mx-auto block w-full max-w-[600px] rounded-md bg-emerald-600 px-4 py-2 text-center text-white"
           }
         >
           Order products
-        </Button>
+        </button>
       </div>
     </div>
   );

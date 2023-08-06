@@ -13,7 +13,7 @@ export default function Home() {
       <h1 className="border-b border-b-gray-800 pb-3 font-serif text-3xl font-medium">
         Shops
       </h1>
-      <div className="mt-5 flex flex-col gap-5 sm:flex-row">
+      <div className="mt-5 flex flex-col flex-wrap gap-5 sm:flex-row">
         {data?.map((business) => (
           <Link to={`/shop/${business.id}`} key={business.id}>
             <Shop image={2} name={business.shopName} />

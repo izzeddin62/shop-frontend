@@ -43,7 +43,9 @@ export default function BusinessWrapper() {
           </Link>
         )}
 
-        <div className="text-xl text-white">logo</div>
+        <Link to="/business" className="text-xl text-white">
+          logo
+        </Link>
         <div></div>
       </header>
       <div className="flex-1 px-4">

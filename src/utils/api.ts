@@ -81,3 +81,22 @@ export async function signup(
   }>("http://localhost:3003/auth/owner/signup", { ...user });
   return res.data;
 }
+
+export async function orderProducts(
+  token: string,
+  products: [string, number][],
+) {
+  const res = await axios.post<{
+    message: string;
+    products: Product[];
+  }>(
+    "http://localhost:3003/products/order",
+    { products },
+    {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    },
+  );
+  return res.data;
+}
